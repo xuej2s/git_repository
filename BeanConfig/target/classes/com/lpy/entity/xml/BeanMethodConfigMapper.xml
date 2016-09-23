@@ -14,6 +14,14 @@
 		<result column="method_name" jdbcType="VARCHAR" property="methodName" />
 	</resultMap>
 	
+	<resultMap id="beanNameMap" type="java.lang.String">
+		<result column="bean_name" jdbcType="VARCHAR" property="beanName" />
+	</resultMap>
+	
+	<resultMap id="serviceIdMap" type="java.lang.String">
+		<result column="service_id" jdbcType="VARCHAR" property="serviceId" />
+	</resultMap>
+	
 	<sql id="Base_Column_List">
 		platform_name, bean_name,method_name,service_id,creat_time,creator
 	</sql>
@@ -87,6 +95,18 @@
 		where method_name like CONCAT('%',#{methodName},'%')
 	</select>
 	
+	<select id="selectBeanName" parameterType="java.lang.String" resultMap="beanNameMap">
+		select bean_name
+		from bean_method
+		where bean_name like CONCAT('%',#{beanName},'%')
+	</select>
+	
+	<select id="selectServiceId" parameterType="java.lang.String" resultMap="serviceIdMap">
+		select service_id
+		from bean_method
+		where service_id like CONCAT('%',#{serviceId},'%')
+	</select>
+	
 	
 	<!-- 批量增加信息 -->
 	<insert id="insertByBatch" parameterType="java.util.List">
@@ -99,6 +119,15 @@
 			#{ob.platformName,jdbcType=VARCHAR},#{ob.methodName,jdbcType=VARCHAR},now())
 		</foreach>
 	</insert>
+	
+	
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		bean_method
+		where service_id = #{serviceId,jdbcType=VARCHAR}
+	</delete>
+	
 <!--  
 	<insert id="insertSelective" parameterType="com.lpy.entity.BeanMethodConfig">
 		insert into bean_method
@@ -134,11 +163,6 @@
  -->
 
 
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-		delete from
-		bean_method
-		where service_id = #{serviceId,jdbcType=VARCHAR}
-	</delete>
 	<!-- 
 	<insert id="insert" parameterType="com.lpy.entity.BeanMethodConfig">
 		insert into bean_method

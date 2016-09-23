@@ -6,7 +6,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
+<script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
+<link href="<c:url value="/resources/core/main.css" />" rel="stylesheet">
 <script type="text/javascript">
 	function winHeight() {
 		return screen.availHeight;
@@ -16,32 +18,32 @@
 		return screen.availWidth;
 	}
 
-	$(function() {
-		$("#methodName")
-				.change(
-						function() {
-							var methodName = document
-									.getElementById("methodName").value;
+	$(document).ready(function() {
 
-							$
-									.post(
-											"tip.do",
-											{
-												'methodName' : methodName
-											},
-											function(data) {
-												alert(data);
-												var li = null;
-												for ( var i in data) {
-													var insertText = "<li><a href='javascript:;''>"
-															+ data[i]
-															+ "</a></li>";
-													$("#methodUl").append(
-															insertText);
-												}
-											});
-						});
+		$('#methodName').autocomplete({
+			serviceUrl: 'tip.do',
+			paramName: "methodName",
+			delimiter: ",",
+		    transformResult: function(data) {
+		    	alert(data)
+		        return {
+		        	
+		            suggestions: $.map($.parseJSON(data), function(item) {
+		            	alert(item)
+		                return { value: item };
+		            })
+		            
+		        };
+		        
+		    }
+		    
+		});
+		
+		
 	});
+	
+
+
 </script>
 
 <style type="text/css">
@@ -49,6 +51,7 @@ td {
 	border: 1px solid #ccc;
 	height: 20px;
 }
+
 </style>
 <%
 	String path = request.getContextPath();
@@ -59,22 +62,17 @@ td {
 
 </head>
 <body>
-	<br>
-	<br>
 	<form action="<%=basePath%>showConfig.do" method="post"
 		style="margin: 0px; display: inline;">
-		
-		方法名称: <input type="text" name="methodName" id="methodName">
-		<ul id="methodUl" style="display: block;"></ul>
-		
-		
 
 
+		方法名称：<input id="methodName"/>
+
+		<ul id="methodUl" style="display: block;">
+			<li></li>
+		</ul>
+
+		<button id="testbut" type="button" onclick="testbut()">测试</button>
 	</form>
-
-
-
-
-
 </body>
 </html>

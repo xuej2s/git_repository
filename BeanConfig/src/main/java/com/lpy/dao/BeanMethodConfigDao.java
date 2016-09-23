@@ -26,4 +26,6 @@ public interface BeanMethodConfigDao {
     
     
     List<String> selectMethodName(String methodName);
+    List<String> selectBeanName(String beanName);
+    List<String> selectServiceId(String serviceId);
 }

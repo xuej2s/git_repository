@@ -394,5 +394,23 @@ public class BeanServiceImpl implements BeanService {
 			return beanMethodConfigDao.selectMethodName(methodName);
 		}
 
+		public int deleteByPrimaryKey(String serviceId) {
+			// TODO Auto-generated method stub
+			int bmd = beanMethodConfigDao.deleteByPrimaryKey(serviceId);
+			int mpd = methodParameterDao.deleteByPrimaryKey(serviceId);
+			int mrd = methodResultDao.deleteByPrimaryKey(serviceId);
+			return bmd*100 + mpd * 10 + mrd;
+		}
+
+		public List<String> selectBeanName(String beanName) {
+			// TODO Auto-generated method stub
+			return beanMethodConfigDao.selectBeanName(beanName);
+		}
+
+		public List<String> selectServiceId(String serviceId) {
+			// TODO Auto-generated method stub
+			return beanMethodConfigDao.selectServiceId(serviceId);
+		}
+
 		
 }

@@ -2,14 +2,11 @@ package com.lpy.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.json.JsonArray;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
@@ -19,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.lpy.entity.BeanMethodConfig;
 import com.lpy.entity.BeanTypeConfig;
 import com.lpy.entity.MethodParameter;
@@ -29,6 +23,8 @@ import com.lpy.entity.MethodParameterModel;
 import com.lpy.entity.MethodResult;
 import com.lpy.entity.MethodResultModel;
 import com.lpy.service.BeanService;
+
+import net.sf.json.JSONArray;
 
 @Controller
 public class BeanController {
@@ -176,21 +172,49 @@ public class BeanController {
 		}
 	}
 	
-//	@RequestMapping("/tip")
-//	public void doTip(String methodName,HttpServletResponse response) throws IOException{
-//		List<String> list =beanService.selectMethodName(methodName);
-//		response.setContentType("text/html");
-//		response.setCharacterEncoding("utf-8");
-//		response.getWriter().print(list);
-//		
-//		
-//	}
-//	
-//	@RequestMapping("/a.do")
-//	public String test(){
-//		return "test";
-//	}
-
-
+	@RequestMapping("/del.do")
+	public String del(String serviceId){
+//		System.out.println(serviceId);
+		int i = beanService.deleteByPrimaryKey(serviceId);
+//		System.out.println(i);
+		return "redirect:showConfig.do";
+	}
+	
+	@RequestMapping("/methodName")
+	public void getMethodName(String methodName,HttpServletResponse response) throws IOException{
+		List<String> list =beanService.selectMethodName(methodName);
+		response.setContentType("text/html");
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(JSONArray.fromObject(list));
+				
+	}
+	
+	@RequestMapping("/beanName")
+	public void getBeanName(String beanName,HttpServletResponse response) throws IOException{
+		List<String> list =beanService.selectBeanName(beanName);
+		response.setContentType("text/html");
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(JSONArray.fromObject(list));
+				
+	}
+	
+	@RequestMapping("/serviceId")
+	public void getServiceId(String serviceId,HttpServletResponse response) throws IOException{
+		List<String> list =beanService.selectServiceId(serviceId);
+		response.setContentType("text/html");
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(JSONArray.fromObject(list));
+				
+	}
+	
+	@RequestMapping("/a.do")
+	public String test(){
+		return "test";
+	}
+	
+	@RequestMapping("b.do")
+	public String test1(){
+		return "test1";
+	}
 
 }

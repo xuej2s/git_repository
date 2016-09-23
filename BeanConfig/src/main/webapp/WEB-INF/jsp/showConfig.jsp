@@ -6,7 +6,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="<c:url value="/resources/core/jquery.1.10.2.min.js" />"></script>
+<script src="<c:url value="/resources/core/jquery.autocomplete.min.js" />"></script>
+<link href="<c:url value="/resources/core/main.css" />" rel="stylesheet">
 <script type="text/javascript">
 	function winHeight() {
 		return screen.availHeight;
@@ -16,23 +18,72 @@
 		return screen.availWidth;
 	}
 	
+	$(document).ready(function() {
+
+		$('#methodName').autocomplete({
+			serviceUrl: 'methodName.do',
+			paramName: "methodName",
+			delimiter: ",",
+		    transformResult: function(data) {
+		    	//alert(data)
+		        return {
+		        	
+		            suggestions: $.map($.parseJSON(data), function(item) {
+		            	//alert(item)
+		                return { value: item };
+		            })
+		            
+		        };
+		        
+		    }
+		    
+		});
+		
+		$('#beanName').autocomplete({
+			serviceUrl: 'beanName',
+			paramName: "beanName",
+			delimiter: ",",
+		    transformResult: function(data) {
+		    	//alert(data)
+		        return {
+		        	
+		            suggestions: $.map($.parseJSON(data), function(item) {
+		            	//alert(item)
+		                return { value: item };
+		            })
+		            
+		        };
+		        
+		    }
+		    
+		});
+		
+		$('#serviceId').autocomplete({
+			serviceUrl: 'serviceId.do',
+			paramName: "serviceId",
+			delimiter: ",",
+		    transformResult: function(data) {
+		    	//alert(data)
+		        return {
+		        	
+		            suggestions: $.map($.parseJSON(data), function(item) {
+		            	//alert(item)
+		                return { value: item };
+		            })
+		            
+		        };
+		        
+		    }
+		    
+		});
+		
+		
+	});
+	
 	
 	
 </script>
 
-
-<!-- 
-<script>
-			function showOrHidden(){
-				var tb=document.getElementById('tb');
-				if(tb.style.display=='none'){
-					tb.style.display='block';
-				}else{
-					tb.style.display='none';
-				}
-			}
-		</script>
- -->
 <style type="text/css">
 td {
 	border: 1px solid #ccc;
@@ -57,12 +108,10 @@ td {
 		Type Name: <input type="text" name="typeName"><br> <br>
 	-->
 
-		服务ID: <input type="text" name="serviceId">
-		&nbsp;Bean名称: <input type="text" name="beanName">
-		
-		&nbsp;方法名称: <input type="text" name="methodName" id="methodName"> 
-		
-		&nbsp;<input type="submit" value="搜索">
+		服务ID: <input type="text" name="serviceId" id="serviceId" > &nbsp;
+		Bean名称: <input type="text" name="beanName" id="beanName" style="width: 222px;"> &nbsp;
+		方法名称: <input type="text" name="methodName" id="methodName" style="width: 222px;"> &nbsp;<input type="submit"
+			value="搜索">
 
 	</form>
 	<!-- <button onclick="window.location='<%=basePath%>add.do'">增加</button> -->
@@ -97,6 +146,8 @@ td {
 			<td align="center"><strong>服务ID</strong></td>
 
 			<td align="center"><strong>方法名称</strong></td>
+			
+			<td align="center"><strong>操作</strong></td>
 
 			<!-- <td align="center" ><strong>TypeName</strong></td> -->
 
@@ -133,6 +184,9 @@ td {
 
 							<td align="center"><c:out value="${bmc.methodName }"></c:out>
 							</td>
+							<td align="center"><a href="<%=basePath%>del.do?serviceId=${bmc.serviceId }"><c:out
+										value="删除"></a>
+							</c:out></td>
 					</c:forEach>
 					<!-- <td align="center" ><c:out value="${bc.typeName }"></c:out></td> -->
 
