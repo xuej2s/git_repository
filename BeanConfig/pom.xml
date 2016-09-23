@@ -7,10 +7,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>test_ssm Maven Webapp</name>
 	<url>http://maven.apache.org</url>
+
+
 	
-	
-	
-	
+
 	<properties>
 		<!-- spring版本号 -->
 		<spring.version>4.0.2.RELEASE</spring.version>
@@ -29,9 +29,9 @@
 			<!-- 表示开发的时候引入，发布的时候不会加载此包 -->
 			<scope>test</scope>
 		</dependency>
-		
-		
-		
+
+
+
 		<!-- spring核心包 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -171,10 +171,16 @@
 			<version>1.9</version>
 		</dependency>
 
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
 
 	</dependencies>
-	
+
 	<build>
-		<finalName>test_ssm</finalName>
+		<finalName>BeanConfig</finalName>
 	</build>
 </project>

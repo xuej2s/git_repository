@@ -36,7 +36,28 @@
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>-->
-
+		<!-- 
+        <table tableName="bean_method" domainObjectName="BeanMethodConfig"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+           
+        </table>
+         -->
+        <!-- 
+        <table tableName="bean_type" domainObjectName="BeanTypeConfig"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            
+        <table tableName="method_result" domainObjectName="MethodResult"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+           
+        </table>
+        </table> -->
+        
         <table tableName="bean_method" domainObjectName="BeanMethodConfig"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
@@ -45,13 +66,6 @@
                                 replaceString=""/>-->
         </table>
         
-        <table tableName="bean_type" domainObjectName="BeanTypeConfig"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <!--<columnRenamingRule searchString="^D_"
-                                replaceString=""/>-->
-        </table>
 
     </context>
 </generatorConfiguration>

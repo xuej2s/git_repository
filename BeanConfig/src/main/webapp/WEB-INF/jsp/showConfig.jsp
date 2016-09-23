@@ -6,6 +6,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript">
+	function winHeight() {
+		return screen.availHeight;
+	}
+
+	function winWidth() {
+		return screen.availWidth;
+	}
+	
+	
+	
+</script>
+
+
 <!-- 
 <script>
 			function showOrHidden(){
@@ -30,51 +45,70 @@ td {
 			+ path + "/";
 %>
 <title>showConfig</title>
+
 </head>
 <body>
-
-	<form action="<%=basePath%>showConfig.do" method="post">
-		Bean Name: <input type="text" name="beanName"><br> <br>
+	<br>
+	<br>
+	<form action="<%=basePath%>showConfig.do" method="post"
+		style="margin: 0px; display: inline;">
+		<!--
+		Platform Name: <input type="text" name="platformName"><br> <br>
 		Type Name: <input type="text" name="typeName"><br> <br>
-		Service Id: <input type="text" name="serviceId"><br> <br>
-		MethodName: <input type="text" name="methodName"><br> <br>
-		<input type="submit" value="搜索">
+	-->
+
+		服务ID: <input type="text" name="serviceId">
+		&nbsp;Bean名称: <input type="text" name="beanName">
+		
+		&nbsp;方法名称: <input type="text" name="methodName" id="methodName"> 
+		
+		&nbsp;<input type="submit" value="搜索">
 
 	</form>
-	<button onclick="window.location='<%=basePath%>add.do'">增加</button>
+	<!-- <button onclick="window.location='<%=basePath%>add.do'">增加</button> -->
+
+	<button
+		onclick="window.open('<%=basePath%>add.do','新增信息','height=400,width=500,top=200,left=600,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no')">增加</button>
+	<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<br>
 	<br>
 
-	<h1 align="center">BeanConfig</h1>
 
 	<!-- 
+		<h1 align="center">BeanConfig</h1>
 		<input type="checkbox" onclick="showOrHidden()">显示/隐藏   
 		display:none;
 		id="tb"
 	-->
 
-	
+
 	<table align="center" class="table table-hover table-condensed"
 		style="width: 100%; border: 1px solid #ccc;" id="table1">
-		<caption>显示/隐藏beanNAME</caption>
-		<caption></caption>
+
 		<tr>
-			<td align="center"><strong>BeanName</strong></td>
+			<td align="center"><strong>服务平台</strong></td>
 
-			<td align="center"><strong>TypeName</strong></td>
+			<td align="center"><strong>Bean名称</strong></td>
 
-			<td align="center"><strong>ServiceId</strong></td>
 
-			<td align="center"><strong>MethodName</strong></td>
+			<td align="center"><strong>服务ID</strong></td>
+
+			<td align="center"><strong>方法名称</strong></td>
+
+			<!-- <td align="center" ><strong>TypeName</strong></td> -->
 
 		</tr>
 		<tbody id="table2">
 
 			<c:forEach items="${list }" var="bc">
 				<tr>
+					<td align="center"><c:out value="${bc.platformName }"></c:out></td>
+
 					<td align="center"><c:out value="${bc.beanName }"></c:out></td>
 
-					<td align="center"><c:out value="${bc.typeName }"></c:out></td>
 					<%
 						int count = 0;
 					%>
@@ -84,24 +118,36 @@ td {
 									if (count > 1) {
 						%>
 						<tr>
+							<td align="center"><c:out value="${bc.platformName }"></c:out></td>
+
 							<td align="center"><c:out value="${bc.beanName }"></c:out></td>
 
-							<td align="center"><c:out value="${bc.typeName }"></c:out></td>
+							<!-- <td align="center" ><c:out value="${bc.typeName }"></c:out></td> -->
+
 							<%
 								}
 							%>
-							<td align="center"><c:out value="${bmc.serviceId }"></c:out>
-							</td>
+							<td align="center"><a href="javascript:;"
+								onclick="window.open('<%=basePath%>showAllConfig.do?serviceId=${bmc.serviceId }','新增信息','height=400,width=800,top=200,left=600,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no')"><c:out
+										value="${bmc.serviceId }"></c:out></a></td>
 
 							<td align="center"><c:out value="${bmc.methodName }"></c:out>
 							</td>
 					</c:forEach>
+					<!-- <td align="center" ><c:out value="${bc.typeName }"></c:out></td> -->
+
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
+
 </body>
 </html>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <span id="spanFirst">第一页</span>
 <span id="spanPre">上一页</span>
 <span id="spanNext">下一页</span>
@@ -124,7 +170,7 @@ td {
 	var spanLast = document.getElementById("spanLast");
 
 	var numberRowsInTable = theTable.rows.length;
-	var pageSize = 5;
+	var pageSize = 25;
 	var page = 1;
 
 	//下一页
@@ -264,21 +310,20 @@ td {
 	}
 
 	hide();
-	
 </script>
 <script type="text/javascript">
-    window.onload = function(){
-        var tab = document.getElementsByTagName('table')[0];
-        tab.caption.onclick = function(){
-            var trs = tab.rows;
-            for(var i = 0, len = trs.length; i < len; i++){
-                var cell = trs[i].cells[1];
-                if(cell.style.display == 'none'){
-                    cell.style.display = '';
-                }else{
-                    cell.style.display = 'none';
-                }
-            }
-        }
-    }
- </script>
+	window.onload = function() {
+		var tab = document.getElementsByTagName('table')[0];
+		tab.caption.onclick = function() {
+			var trs = tab.rows;
+			for (var i = 0, len = trs.length; i < len; i++) {
+				var cell = trs[i].cells[4];
+				if (cell.style.display == 'none') {
+					cell.style.display = '';
+				} else {
+					cell.style.display = 'none';
+				}
+			}
+		}
+	}
+</script>

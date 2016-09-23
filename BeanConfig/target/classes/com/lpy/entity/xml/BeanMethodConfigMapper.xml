@@ -1,73 +1,175 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lpy.dao.BeanMethodConfigDao">
-  <resultMap id="BaseResultMap" type="com.lpy.entity.BeanMethodConfig">
-    <id column="service_id" jdbcType="VARCHAR" property="serviceId" />
-    <result column="bean_name" jdbcType="VARCHAR" property="beanName" />
-    <result column="method_name" jdbcType="VARCHAR" property="methodName" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    service_id, bean_name, method_name
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from bean_method
-    where service_id = #{serviceId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from bean_method
-    where service_id = #{serviceId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.lpy.entity.BeanMethodConfig">
-    insert into bean_method (service_id, bean_name, method_name
-      )
-    values (#{serviceId,jdbcType=VARCHAR}, #{beanName,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}
-      )
-  </insert>
-  
-  <insert id="insertSelective" parameterType="com.lpy.entity.BeanMethodConfig">
-    insert into bean_method
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="serviceId != null and serviceId != ''">
-        service_id,
-      </if>
-      <if test="beanName != null and beanName != ''">
-        bean_name,
-      </if>
-      <if test="methodName != null and methodName != ''">
-        method_name,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="serviceId != null and serviceId != ''">
-        #{serviceId,jdbcType=VARCHAR},
-      </if>
-      <if test="beanName != null and beanName != ''">
-        #{beanName,jdbcType=VARCHAR},
-      </if>
-      <if test="methodName != null and methodName != ''">
-        #{methodName,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  
-  <update id="updateByPrimaryKeySelective" parameterType="com.lpy.entity.BeanMethodConfig">
-    update bean_method
-    <set>
-      <if test="beanName != null">
-        bean_name = #{beanName,jdbcType=VARCHAR},
-      </if>
-      <if test="methodName != null">
-        method_name = #{methodName,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where service_id = #{serviceId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.lpy.entity.BeanMethodConfig">
-    update bean_method
-    set bean_name = #{beanName,jdbcType=VARCHAR},
-      method_name = #{methodName,jdbcType=VARCHAR}
-    where service_id = #{serviceId,jdbcType=VARCHAR}
-  </update>
+	<resultMap id="BaseResultMap" type="com.lpy.entity.BeanMethodConfig">
+		<id column="service_id" jdbcType="VARCHAR" property="serviceId" />
+		<result column="bean_name" jdbcType="VARCHAR" property="beanName" />
+		<result column="method_name" jdbcType="VARCHAR" property="methodName" />
+		<result column="platform_name" jdbcType="VARCHAR" property="platformName" />
+		<result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+		<result column="creator" jdbcType="VARCHAR" property="creator" />
+	</resultMap>
+	
+	<resultMap id="methodMap" type="java.lang.String">
+		<result column="method_name" jdbcType="VARCHAR" property="methodName" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		platform_name, bean_name,method_name,service_id,creat_time,creator
+	</sql>
+
+	<insert id="insert" parameterType="com.lpy.entity.BeanMethodConfig">
+		insert into bean_method (bean_name, method_name, service_id,
+		platform_name, creat_time, creator
+		)
+		values (#{beanName,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR},
+		#{serviceId,jdbcType=VARCHAR},
+		#{platformName,jdbcType=VARCHAR}, now(), #{creator,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.lpy.entity.BeanMethodConfig">
+		insert into bean_method
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="serviceId != null and serviceId != ''">
+				service_id,
+			</if>
+			<if test="platformName != null and platformName != ''">
+				platform_name,
+			</if>
+			<if test="beanName != null and beanName != ''">
+				bean_name,
+			</if>
+			<if test="methodName != null and methodName != ''">
+				method_name,
+			</if>
+			
+				creat_time,
+			
+			<if test="creator != null and creator != ''">
+				creator,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="serviceId != null and serviceId != ''">
+				#{serviceId,jdbcType=VARCHAR},
+			</if>
+			<if test="platformName != null and platformName != ''">
+				#{platformName,jdbcType=VARCHAR},
+			</if>
+			<if test="beanName != null and beanName != ''">
+				#{beanName,jdbcType=VARCHAR},
+			</if>
+			<if test="methodName != null and methodName != ''">
+				#{methodName,jdbcType=VARCHAR},
+			</if>
+			
+				now(),
+			
+			<if test="creator != null and creator != ''">
+				#{creator,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from bean_method
+		where service_id = #{serviceId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectMethodName" parameterType="java.lang.String" resultMap="methodMap">
+		select method_name
+		from bean_method
+		where method_name like CONCAT('%',#{methodName},'%')
+	</select>
+	
+	
+	<!-- 批量增加信息 -->
+	<insert id="insertByBatch" parameterType="java.util.List">
+		insert into bean_method
+		(service_id,
+		bean_name,platform_name,method_name,creat_time)
+		values
+		<foreach collection="list" index="index" item="ob" separator=",">
+			(#{ob.serviceId,jdbcType=VARCHAR},#{ob.beanName,jdbcType=VARCHAR},
+			#{ob.platformName,jdbcType=VARCHAR},#{ob.methodName,jdbcType=VARCHAR},now())
+		</foreach>
+	</insert>
+<!--  
+	<insert id="insertSelective" parameterType="com.lpy.entity.BeanMethodConfig">
+		insert into bean_method
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="serviceId != null and serviceId != ''">
+				service_id,
+			</if>
+			<if test="platformName != null and platformName != ''">
+				platform_name,
+			</if>
+			<if test="beanName != null and beanName != ''">
+				bean_name,
+			</if>
+			<if test="methodName != null and methodName != ''">
+				method_name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="serviceId != null and serviceId != ''">
+				#{serviceId,jdbcType=VARCHAR},
+			</if>
+			<if test="platformName != null and platformName != ''">
+				#{platformName,jdbcType=VARCHAR},
+			</if>
+			<if test="beanName != null and beanName != ''">
+				#{beanName,jdbcType=VARCHAR},
+			</if>
+			<if test="methodName != null and methodName != ''">
+				#{methodName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+ -->
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		bean_method
+		where service_id = #{serviceId,jdbcType=VARCHAR}
+	</delete>
+	<!-- 
+	<insert id="insert" parameterType="com.lpy.entity.BeanMethodConfig">
+		insert into bean_method
+		(service_id, bean_name, method_name
+		)
+		values
+		(#{serviceId,jdbcType=VARCHAR}, #{beanName,jdbcType=VARCHAR},
+		#{methodName,jdbcType=VARCHAR}
+		)
+	</insert>
+ -->
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.lpy.entity.BeanMethodConfig">
+		update bean_method
+		<set>
+			<if test="beanName != null">
+				bean_name = #{beanName,jdbcType=VARCHAR},
+			</if>
+			<if test="methodName != null">
+				method_name = #{methodName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where service_id = #{serviceId,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="com.lpy.entity.BeanMethodConfig">
+		update bean_method
+		set bean_name = #{beanName,jdbcType=VARCHAR},
+		method_name =
+		#{methodName,jdbcType=VARCHAR}
+		where service_id =
+		#{serviceId,jdbcType=VARCHAR}
+	</update>
 </mapper>

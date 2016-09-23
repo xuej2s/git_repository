@@ -1,124 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lpy.dao.BeanTypeConfigDao">
-  <resultMap id="BaseResultMap" type="com.lpy.entity.BeanTypeConfig">
-    <id column="bean_name" jdbcType="VARCHAR" property="beanName" />
-    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
-  </resultMap>
-  
-  <resultMap id="SelectAllMap" type="com.lpy.entity.BeanTypeConfig">
-    <result column="bean_name" jdbcType="VARCHAR" property="beanName" />
-    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
-    <!-- 
-    <association property="beanMethodConfig" javaType="com.lpy.entity.BeanMethodConfig" >
-    	<id property="serviceId" column="service_id" jdbcType="VARCHAR"/>
-    	<result property="methodName" column="method_name" jdbcType="VARCHAR"/>
-    </association>
-     -->
-    <collection property="beanMethodConfigs" ofType="com.lpy.entity.BeanMethodConfig">
-       <id property="serviceId" column="service_id"/>
-       <result property="methodName" column="method_name"/>
-    </collection>
-  </resultMap>
-  
-  <sql id="Base_Column_List">
-    bean_name, type_name
-  </sql>
-  
-  <select id="selectAllConfig" parameterType="com.lpy.entity.BeanMethodConfig" resultMap="SelectAllMap">
-  	select *
-  	from
-  		bean_type a,
-  		bean_method b
-  	<where>
-  	
-  		a.bean_name = b.bean_name
-  		<if test="beanName != null">
-  			and a.bean_name = #{beanName}
-  		</if>
-  		<if test="methodName != null">
-  			and b.method_name = #{methodName}
-  		</if>
-  		<if test="serviceId != null">
-  			and b.service_id = #{serviceId}
-  		</if>
-  		 
-  	</where>
-  </select>
-  
-  <select id="getAllConfig" parameterType="java.util.Map" resultMap="SelectAllMap">
-  	select a.bean_name,a.type_name,b.service_id,b.method_name
-  	from
-  		bean_type a,
-  		bean_method b
-  	<where>
-  	
-  		a.bean_name = b.bean_name
-  		<if test="beanMethodConfig.beanName != null and beanMethodConfig.beanName != '' ">
-  			and b.bean_name = #{beanMethodConfig.beanName}
-  		</if>
-  		<if test="beanTypeConfig.beanName != null and beanTypeConfig.beanName != ''">
-  			and a.bean_name = #{beanTypeConfig.beanName}
-  		</if>
-  		<if test="beanTypeConfig.typeName != null and beanTypeConfig.typeName != ''">
-  			and a.type_name = #{beanTypeConfig.typeName}
-  		</if>
-  		<if test="beanMethodConfig.methodName != null and beanMethodConfig.methodName != ''">
-  			and b.method_name = #{beanMethodConfig.methodName}
-  		</if>
-  		<if test="beanMethodConfig.serviceId != null and beanMethodConfig.serviceId != ''">
-  			and b.service_id = #{beanMethodConfig.serviceId}
-  		</if>
-  		 
-  	</where>
-  </select>
-  
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from bean_type
-    where bean_name = #{beanName,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from bean_type
-    where bean_name = #{beanName,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.lpy.entity.BeanTypeConfig">
-    insert into bean_type (bean_name, type_name)
-    values (#{beanName,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR})
-  </insert>
-  
-  <insert id="insertSelective" parameterType="com.lpy.entity.BeanTypeConfig">
-    insert into bean_type
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="beanName != null">
-        bean_name,
-      </if>
-      <if test="typeName != null">
-        type_name,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="beanName != null">
-        #{beanName,jdbcType=VARCHAR},
-      </if>
-      <if test="typeName != null">
-        #{typeName,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.lpy.entity.BeanTypeConfig">
-    update bean_type
-    <set>
-      <if test="typeName != null">
-        type_name = #{typeName,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where bean_name = #{beanName,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.lpy.entity.BeanTypeConfig">
-    update bean_type
-    set type_name = #{typeName,jdbcType=VARCHAR}
-    where bean_name = #{beanName,jdbcType=VARCHAR}
-  </update>
+	<resultMap id="BaseResultMap" type="com.lpy.entity.BeanTypeConfig">
+		<id column="platform_name" jdbcType="VARCHAR" property="platformName" />
+		<id column="bean_name" jdbcType="VARCHAR" property="beanName" />
+		<result column="type_name" jdbcType="VARCHAR" property="typeName" />
+	</resultMap>
+
+	<resultMap id="SelectAllMap" type="com.lpy.entity.BeanTypeConfig">
+		<id column="platform_name" jdbcType="VARCHAR" property="platformName" />
+		<id column="bean_name" jdbcType="VARCHAR" property="beanName" />
+		<result column="type_name" jdbcType="VARCHAR" property="typeName" />
+		<collection property="beanMethodConfigs" ofType="com.lpy.entity.BeanMethodConfig">
+			<id property="serviceId" column="service_id" />
+			<result property="methodName" column="method_name" />
+			<result property="creator" column="creator"/>
+			<result property="creatTime" column="creat_time"/>
+		</collection>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		platform_name, bean_name, type_name
+	</sql>
+	
+	<select id="getConfigs" parameterType="java.lang.String"
+		resultMap="SelectAllMap">
+		select *
+		from
+		bean_type a,
+		bean_method b
+		<where>
+
+			a.bean_name = b.bean_name
+			and a.platform_name = b.platform_name
+			and b.service_id = #{beanMethodConfig.serviceId}
+		</where>
+	</select>
+	
+	<!-- 查询检索信息 -->
+	<select id="getAllConfig" parameterType="java.util.Map"
+		resultMap="SelectAllMap">
+		select *
+		from
+		bean_type a,
+		bean_method b
+		<where>
+
+			a.bean_name = b.bean_name
+			and a.platform_name = b.platform_name
+
+			<if
+				test="beanTypeConfig.platformName != null and beanTypeConfig.platformName != ''">
+				and a.platform_name = #{beanTypeConfig.platformName}
+			</if>
+			<if
+				test="beanTypeConfig.beanName != null and beanTypeConfig.beanName != ''">
+				and a.bean_name = #{beanTypeConfig.beanName}
+			</if>
+			<if
+				test="beanTypeConfig.typeName != null and beanTypeConfig.typeName != ''">
+				and a.type_name = #{beanTypeConfig.typeName}
+			</if>
+			<if
+				test="beanMethodConfig.beanName != null and beanMethodConfig.beanName != '' ">
+				and b.bean_name = #{beanMethodConfig.beanName}
+			</if>
+			<if
+				test="beanMethodConfig.platformName != null and beanMethodConfig.platformName != '' ">
+				and b.platform_name = #{beanMethodConfig.platformName}
+			</if>
+			<if
+				test="beanMethodConfig.methodName != null and beanMethodConfig.methodName != ''">
+				and b.method_name = #{beanMethodConfig.methodName}
+			</if>
+			<if
+				test="beanMethodConfig.serviceId != null and beanMethodConfig.serviceId != ''">
+				and b.service_id = #{beanMethodConfig.serviceId}
+			</if>
+
+		</where>
+		ORDER BY a.bean_name
+	</select>
+
+	<!-- 通过beanname查询 -->
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from bean_type
+		where bean_name = #{beanName,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 通过platformname查询 -->
+	<select id="selectByPlatform" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		<!-- resultMap="BaseResultMap" -->
+		select
+		<include refid="Base_Column_List" />
+		from bean_type
+		where platform_name = #{platformName,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 插入单条信息 -->
+	<insert id="insertSelective" parameterType="com.lpy.entity.BeanTypeConfig">
+		insert into bean_type
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="platformName != null and platformName != ''">
+				platform_name,
+			</if>
+			<if test="beanName != null and beanName != ''">
+				bean_name,
+			</if>
+			<if test="typeName != null and typeName != ''">
+				type_name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="platformName != null and platformName != ''">
+				#{platformName,jdbcType=VARCHAR},
+			</if>
+			<if test="beanName != null and beanName != ''">
+				#{beanName,jdbcType=VARCHAR},
+			</if>
+			<if test="typeName != null and typeName != ''">
+				#{typeName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 批量增加信息 -->
+	<insert id="insertByBatch" parameterType="java.util.List">
+		insert into bean_type
+		(platform_name,bean_name, type_name)
+		values
+		<foreach collection="list" item="obj" index="index" separator=",">
+			(#{obj.platformName,jdbcType=VARCHAR},#{obj.beanName,jdbcType=VARCHAR},
+			#{obj.typeName,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		bean_type
+		where bean_name = #{beanName,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.lpy.entity.BeanTypeConfig">
+		insert into bean_type
+		(bean_name, type_name)
+		values (#{beanName,jdbcType=VARCHAR},
+		#{typeName,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.lpy.entity.BeanTypeConfig">
+		update bean_type
+		<set>
+			<if test="typeName != null">
+				type_name = #{typeName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where bean_name = #{beanName,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.lpy.entity.BeanTypeConfig">
+		update bean_type
+		set type_name = #{typeName,jdbcType=VARCHAR}
+		where bean_name =
+		#{beanName,jdbcType=VARCHAR}
+	</update>
 </mapper>
+
+
+
+<!-- <select id="selectAllConfig" parameterType="com.lpy.entity.BeanMethodConfig" 
+	resultMap="SelectAllMap"> select * from bean_type a, bean_method b <where> 
+	a.bean_name = b.bean_name <if test="beanName != null"> and a.bean_name = 
+	#{beanName} </if> <if test="methodName != null"> and b.method_name = #{methodName} 
+	</if> <if test="serviceId != null"> and b.service_id = #{serviceId} </if> 
+	</where> </select> -->

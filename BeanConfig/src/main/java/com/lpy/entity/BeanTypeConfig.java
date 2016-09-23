@@ -3,35 +3,33 @@ package com.lpy.entity;
 import java.util.List;
 
 public class BeanTypeConfig {
+	
+	private String platformName;
+	
     private String beanName;
 
     private String typeName;
     
     private List<BeanMethodConfig> beanMethodConfigs;
     
+    public BeanTypeConfig() {
+		// TODO Auto-generated constructor stub
+	}
     
+    public BeanTypeConfig(String platformName,String beanName,String typeName) {
+		// TODO Auto-generated constructor stub
+    	this.platformName = platformName;
+    	this.beanName = beanName;
+    	this.typeName = typeName;
+	}
     
-//    private BeanMethodConfig beanMethodConfig;
-//    
-//    private String serviceId;
-//    
-//    private String methodName;
-//    
-//    public String getMethodName() {
-//		return beanMethodConfig.getMethodName();
-//	}
-//    
-//    public String getServiceId() {
-//		return beanMethodConfig.getServiceId();
-//	}
-    
-//    public BeanMethodConfig getBeanMethodConfig() {
-//		return beanMethodConfig;
-//	}
-//
-//	public void setBeanMethodConfig(BeanMethodConfig beanMethodConfig) {
-//		this.beanMethodConfig = beanMethodConfig;
-//	}
+    public String getPlatformName() {
+		return platformName;
+	}
+
+	public void setPlatformName(String platformName) {
+		this.platformName = platformName;
+	}
 
 	public List<BeanMethodConfig> getBeanMethodConfigs() {
 		return beanMethodConfigs;
