@@ -115,9 +115,37 @@
 		bean_name,platform_name,method_name,creat_time)
 		values
 		<foreach collection="list" index="index" item="ob" separator=",">
-			(#{ob.serviceId,jdbcType=VARCHAR},#{ob.beanName,jdbcType=VARCHAR},
+			(
+			#{ob.serviceId,jdbcType=VARCHAR},#{ob.beanName,jdbcType=VARCHAR},
 			#{ob.platformName,jdbcType=VARCHAR},#{ob.methodName,jdbcType=VARCHAR},now())
 		</foreach>
+	</insert>
+	
+	<insert id="insertSelectiveByBatch" parameterType="java.util.List" >
+		insert into bean_method
+		(service_id,
+		platform_name,bean_name,method_name,creat_time,creator)
+		values
+			<foreach collection="list" index="index" item="ob" separator="," >
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="ob.serviceId != null and ob.serviceId != ''">
+					#{ob.serviceId,jdbcType=VARCHAR},
+				</if>
+				<if test="ob.platformName != null and ob.platformName != ''">
+					#{ob.platformName,jdbcType=VARCHAR},
+				</if>
+				<if test="ob.beanName != null and ob.beanName != ''">
+					#{ob.beanName,jdbcType=VARCHAR},
+				</if>
+				<if test="ob.methodName != null and ob.methodName != ''">
+					#{ob.methodName,jdbcType=VARCHAR},
+				</if>
+					now(),
+				<if test="ob.creator != null">
+					#{ob.creator,jdbcType=VARCHAR},
+				</if>
+		</trim>
+			</foreach>
 	</insert>
 	
 	

@@ -172,11 +172,14 @@ public class BeanServiceImpl implements BeanService {
 
 	}
 
+	
+	
 	/*
-	 * 单机版批量增加信息
+	 * 单机版增加创建者的批量增加
 	 */
-	public int insertByBatch(Map<String, Object> map) {
 
+	public int insertSelectiveByBatch(Map<String, Object> map) {
+		// TODO Auto-generated method stub
 		List<BeanTypeConfig> btList = (List<BeanTypeConfig>) map.get("btList");
 		List<BeanMethodConfig> bmList = (List<BeanMethodConfig>) map.get("bmList");
 		List<MethodParameter> methodParameters = (List<MethodParameter>)map.get("methodParameters");
@@ -193,21 +196,20 @@ public class BeanServiceImpl implements BeanService {
 		if (bmList.size() != 0) {
 
 			btnum = beanTypeConfigDao.insertByBatch(btList);
-			bmnum = beanMethodConfigDao.insertByBatch(bmList);
+			bmnum = beanMethodConfigDao.insertSelectiveByBatch(bmList);
 			mpnum = methodParameterDao.insertParamByBatch(methodParameters)*100;
 			mrnum = methodResultDao.insertResByBatch(methodResults)*1000;
 		}
 
 		return btnum + bmnum + mpnum + mrnum;
-
 	}
 
 	/*
 	 * 服务端批量添加
 	 */
-	public int insertByBatch(File file, String platformName) {
+	public int insertByBatch(File file, String platformName,String creator) {
 
-		Map<String, Object> map = parseXmlByDom4j(file, platformName);
+		Map<String, Object> map = parseXmlByDom4j(file, platformName, creator);
 		List<BeanTypeConfig> btList = (List<BeanTypeConfig>) map.get("btList");
 		List<BeanMethodConfig> bmList = (List<BeanMethodConfig>) map.get("bmList");
 		List<MethodParameter> methodParameters = (List<MethodParameter>)map.get("methodParameters");
@@ -224,7 +226,7 @@ public class BeanServiceImpl implements BeanService {
 		if (bmList.size() != 0) {
 
 			btnum = beanTypeConfigDao.insertByBatch(btList);
-			bmnum = beanMethodConfigDao.insertByBatch(bmList);
+			bmnum = beanMethodConfigDao.insertSelectiveByBatch(bmList);
 			mpnum = methodParameterDao.insertParamByBatch(methodParameters)*100;
 			mrnum = methodResultDao.insertResByBatch(methodResults)*1000;
 		}
@@ -321,7 +323,7 @@ public class BeanServiceImpl implements BeanService {
 	
 	
 	// 解析xml文件获取有效信息
-		public static Map<String, Object> parseXmlByDom4j(File file, String platformName) {
+		public static Map<String, Object> parseXmlByDom4j(File file, String platformName, String creator) {
 
 			SAXReader reader = new SAXReader();
 			Document document;
@@ -347,6 +349,7 @@ public class BeanServiceImpl implements BeanService {
 						String methodName = serviceMethod.attributeValue("method-name");
 						BeanMethodConfig beanMethodConfig = new BeanMethodConfig(platformName, serviceId, beanName,
 								methodName);
+						beanMethodConfig.setCreator(creator);
 						
 						bmList.add(beanMethodConfig);
 
@@ -411,6 +414,39 @@ public class BeanServiceImpl implements BeanService {
 			// TODO Auto-generated method stub
 			return beanMethodConfigDao.selectServiceId(serviceId);
 		}
+		
+		
+//		/*
+//		 * 单机版批量增加信息
+//		 */
+//		public int insertByBatch(Map<String, Object> map) {
+//
+//			List<BeanTypeConfig> btList = (List<BeanTypeConfig>) map.get("btList");
+//			List<BeanMethodConfig> bmList = (List<BeanMethodConfig>) map.get("bmList");
+//			List<MethodParameter> methodParameters = (List<MethodParameter>)map.get("methodParameters");
+//			List<MethodResult> methodResults = (List<MethodResult>)map.get("methodResults");
+//
+//			for (int i = 0; i < bmList.size(); i++) {
+//				if (beanMethodConfigDao.selectByPrimaryKey(bmList.get(i).getServiceId()) != null) {
+//					bmList.remove(i);
+//					i--;
+//				}
+//			}
+//
+//			int btnum = 0, bmnum = 0,mpnum = 0, mrnum = 0;
+//			if (bmList.size() != 0) {
+//
+//				btnum = beanTypeConfigDao.insertByBatch(btList);
+//				bmnum = beanMethodConfigDao.insertSelectiveByBatch(bmList);
+//				mpnum = methodParameterDao.insertParamByBatch(methodParameters)*100;
+//				mrnum = methodResultDao.insertResByBatch(methodResults)*1000;
+//			}
+//
+//			return btnum + bmnum + mpnum + mrnum;
+//
+//		}
+		
+		
 
 		
 }

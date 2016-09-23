@@ -23,6 +23,9 @@ public interface BeanMethodConfigDao {
     
     
     
+    int insertSelectiveByBatch(List<BeanMethodConfig> bmList);
+    
+    
     
     
     List<String> selectMethodName(String methodName);

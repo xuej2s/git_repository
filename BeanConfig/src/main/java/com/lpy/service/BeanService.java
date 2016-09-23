@@ -17,9 +17,14 @@ public interface BeanService {
 
 	BeanMethodConfig autoCreateServiceId();
 
-	int insertByBatch(Map<String, Object> map);
+	//int insertByBatch(Map<String, Object> map);
 
-	int insertByBatch(File file, String platformName);
+	int insertByBatch(File file, String platformName, String creator);
+	
+	
+	int insertSelectiveByBatch(Map<String, Object> map);
+	
+	
 
 	BeanTypeConfig showAllConfig(String serviceId);
 

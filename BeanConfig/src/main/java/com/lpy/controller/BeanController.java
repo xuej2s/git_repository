@@ -140,9 +140,9 @@ public class BeanController {
 			e.printStackTrace();
 		}
 		
-		System.out.println(creator);
+//		System.out.println(creator+"-----------------");
 			
-		beanService.insertByBatch(file3, platformName);
+		beanService.insertByBatch(file3, platformName,creator);
 			
 		response.setContentType("text/html");
 		response.setCharacterEncoding("utf-8");
@@ -207,14 +207,14 @@ public class BeanController {
 				
 	}
 	
-	@RequestMapping("/a.do")
-	public String test(){
-		return "test";
-	}
-	
-	@RequestMapping("b.do")
-	public String test1(){
-		return "test1";
-	}
+//	@RequestMapping("/a.do")
+//	public String test(){
+//		return "test";
+//	}
+//	
+//	@RequestMapping("b.do")
+//	public String test1(){
+//		return "test1";
+//	}
 
 }
