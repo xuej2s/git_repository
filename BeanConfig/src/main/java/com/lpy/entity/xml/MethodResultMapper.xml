@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lpy.dao.MethodResultDao">
+	<resultMap id="BaseResultMap" type="com.lpy.entity.MethodResult">
+		<id column="service_id" jdbcType="VARCHAR" property="serviceId" />
+		<id column="method_result" jdbcType="VARCHAR" property="methodResult" />
+		<result column="method_result_type" jdbcType="VARCHAR"
+			property="methodResultType" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		service_id, method_result, method_result_type
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="com.lpy.entity.MethodResult"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from method_result
+		where service_id = #{serviceId,jdbcType=VARCHAR}
+		and method_result = #{methodResult,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="com.lpy.entity.MethodResult">
+		delete from method_result
+		where service_id = #{serviceId,jdbcType=VARCHAR}
+		<!-- 
+		and method_result = #{methodResult,jdbcType=VARCHAR}
+		 -->
+	</delete>
+	<insert id="insert" parameterType="com.lpy.entity.MethodResult">
+		insert into method_result (service_id, method_result, method_result_type
+		)
+		values (#{serviceId,jdbcType=VARCHAR}, #{methodResult,jdbcType=VARCHAR},
+		#{methodResultType,jdbcType=VARCHAR}
+		)
+	</insert>
+
+
+
+	<insert id="insertSelective" parameterType="com.lpy.entity.MethodResult">
+		insert into method_result
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="serviceId != null and serviceId != ''">
+				service_id,
+			</if>
+			<if test="methodResult != null and methodResult != ''">
+				method_result,
+			</if>
+			<if test="methodResultType != null and methodResultType != ''">
+				method_result_type,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="serviceId != null and serviceId != ''">
+				#{serviceId,jdbcType=VARCHAR},
+			</if>
+			<if test="methodResult != null and methodResult != ''">
+				#{methodResult,jdbcType=VARCHAR},
+			</if>
+			<if test="methodResultType != null and methodResultType != ''">
+				#{methodResultType,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 批量增加信息 : 未测试 -->
+	<insert id="insertResByBatch" parameterType="java.util.List">
+		insert into method_result (service_id, method_result,
+		method_result_type
+		)
+		values
+		<foreach collection="list" item="obj" index="index" separator=",">
+			(#{obj.serviceId,jdbcType=VARCHAR},
+			#{obj.methodResult,jdbcType=VARCHAR},
+			#{obj.methodResultType,jdbcType=VARCHAR}
+			)
+		</foreach>
+
+	</insert>
+
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.lpy.entity.MethodResult">
+		update method_result
+		<set>
+			<if test="methodResultType != null">
+				method_result_type = #{methodResultType,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where service_id = #{serviceId,jdbcType=VARCHAR}
+		and method_result = #{methodResult,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.lpy.entity.MethodResult">
+		update method_result
+		set method_result_type = #{methodResultType,jdbcType=VARCHAR}
+		where service_id = #{serviceId,jdbcType=VARCHAR}
+		and method_result = #{methodResult,jdbcType=VARCHAR}
+	</update>
+</mapper>
