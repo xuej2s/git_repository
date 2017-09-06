@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lpy.dao.AcBizLockDao">
+  <resultMap id="BaseResultMap" type="com.lpy.entity.AcBizLock">
+    <id column="tnt_inst_id" jdbcType="VARCHAR" property="tntInstId" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="biz_id" jdbcType="VARCHAR" property="bizId" />
+    <result column="biz_type" jdbcType="VARCHAR" property="bizType" />
+    <result column="lock_type" jdbcType="VARCHAR" property="lockType" />
+    <result column="locked_time" jdbcType="TIMESTAMP" property="lockedTime" />
+    <result column="master_lock_id" jdbcType="VARCHAR" property="masterLockId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tnt_inst_id, id, gmt_created, gmt_modified, biz_id, biz_type, lock_type, locked_time, 
+    master_lock_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.lpy.entity.AcBizLockKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ac_biz_lock
+    where tnt_inst_id = #{tntInstId,jdbcType=VARCHAR}
+      and id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAllConfig" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List"/>
+  	from ac_biz_lock
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.lpy.entity.AcBizLockKey">
+    delete from ac_biz_lock
+    where tnt_inst_id = #{tntInstId,jdbcType=VARCHAR}
+      and id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.lpy.entity.AcBizLock">
+    insert into ac_biz_lock (tnt_inst_id, id, gmt_created, 
+      gmt_modified, biz_id, biz_type, 
+      lock_type, locked_time, master_lock_id
+      )
+    values (#{tntInstId,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{bizId,jdbcType=VARCHAR}, #{bizType,jdbcType=VARCHAR}, 
+      #{lockType,jdbcType=VARCHAR}, #{lockedTime,jdbcType=TIMESTAMP}, #{masterLockId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lpy.entity.AcBizLock">
+    insert into ac_biz_lock
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tntInstId != null">
+        tnt_inst_id,
+      </if>
+      <if test="id != null">
+        id,
+      </if>
+      <if test="gmtCreated != null">
+        gmt_created,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="bizId != null">
+        biz_id,
+      </if>
+      <if test="bizType != null">
+        biz_type,
+      </if>
+      <if test="lockType != null">
+        lock_type,
+      </if>
+      <if test="lockedTime != null">
+        locked_time,
+      </if>
+      <if test="masterLockId != null">
+        master_lock_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tntInstId != null">
+        #{tntInstId,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null">
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bizId != null">
+        #{bizId,jdbcType=VARCHAR},
+      </if>
+      <if test="bizType != null">
+        #{bizType,jdbcType=VARCHAR},
+      </if>
+      <if test="lockType != null">
+        #{lockType,jdbcType=VARCHAR},
+      </if>
+      <if test="lockedTime != null">
+        #{lockedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="masterLockId != null">
+        #{masterLockId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lpy.entity.AcBizLock">
+    update ac_biz_lock
+    <set>
+      <if test="gmtCreated != null">
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bizId != null">
+        biz_id = #{bizId,jdbcType=VARCHAR},
+      </if>
+      <if test="bizType != null">
+        biz_type = #{bizType,jdbcType=VARCHAR},
+      </if>
+      <if test="lockType != null">
+        lock_type = #{lockType,jdbcType=VARCHAR},
+      </if>
+      <if test="lockedTime != null">
+        locked_time = #{lockedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="masterLockId != null">
+        master_lock_id = #{masterLockId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tnt_inst_id = #{tntInstId,jdbcType=VARCHAR}
+      and id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lpy.entity.AcBizLock">
+    update ac_biz_lock
+    set gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      biz_id = #{bizId,jdbcType=VARCHAR},
+      biz_type = #{bizType,jdbcType=VARCHAR},
+      lock_type = #{lockType,jdbcType=VARCHAR},
+      locked_time = #{lockedTime,jdbcType=TIMESTAMP},
+      master_lock_id = #{masterLockId,jdbcType=VARCHAR}
+    where tnt_inst_id = #{tntInstId,jdbcType=VARCHAR}
+      and id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

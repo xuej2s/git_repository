@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lpy.dao.AcAsynExecutorCmdDao">
+  <resultMap id="BaseResultMap" type="com.lpy.entity.AcAsynExecutorCmd">
+    <id column="tnt_inst_id" jdbcType="VARCHAR" property="tntInstId" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_modify" jdbcType="TIMESTAMP" property="gmtModify" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="command_type" jdbcType="VARCHAR" property="commandType" />
+    <result column="execute_times" jdbcType="INTEGER" property="executeTimes" />
+    <result column="next_execute_time" jdbcType="TIMESTAMP" property="nextExecuteTime" />
+    <result column="business_no" jdbcType="VARCHAR" property="businessNo" />
+    <result column="context" jdbcType="VARCHAR" property="context" />
+    <result column="hostname" jdbcType="VARCHAR" property="hostname" />
+    <result column="event_context" jdbcType="VARCHAR" property="eventContext" />
+    <result column="trace_id" jdbcType="VARCHAR" property="traceId" />
+    <result column="LOG_ENV" jdbcType="VARCHAR" property="logEnv" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    tnt_inst_id, id, gmt_create, creator, gmt_modify, modifier, status, command_type, 
+    execute_times, next_execute_time, business_no, context, hostname, event_context, 
+    trace_id, LOG_ENV
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="com.lpy.entity.AcAsynExecutorCmdKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ac_asyn_executor_cmd
+    where tnt_inst_id = #{tntInstId,jdbcType=VARCHAR}
+      and id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAllConfig" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from ac_asyn_executor_cmd
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.lpy.entity.AcAsynExecutorCmdKey">
+    delete from ac_asyn_executor_cmd
+    where tnt_inst_id = #{tntInstId,jdbcType=VARCHAR}
+      and id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.lpy.entity.AcAsynExecutorCmd">
+    insert into ac_asyn_executor_cmd (tnt_inst_id, id, gmt_create, 
+      creator, gmt_modify, modifier, 
+      status, command_type, execute_times, 
+      next_execute_time, business_no, context, 
+      hostname, event_context, trace_id, 
+      LOG_ENV)
+    values (#{tntInstId,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtModify,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{commandType,jdbcType=VARCHAR}, #{executeTimes,jdbcType=INTEGER}, 
+      #{nextExecuteTime,jdbcType=TIMESTAMP}, #{businessNo,jdbcType=VARCHAR}, #{context,jdbcType=VARCHAR}, 
+      #{hostname,jdbcType=VARCHAR}, #{eventContext,jdbcType=VARCHAR}, #{traceId,jdbcType=VARCHAR}, 
+      #{logEnv,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.lpy.entity.AcAsynExecutorCmd">
+    insert into ac_asyn_executor_cmd
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tntInstId != null">
+        tnt_inst_id,
+      </if>
+      <if test="id != null">
+        id,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="gmtModify != null">
+        gmt_modify,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="commandType != null">
+        command_type,
+      </if>
+      <if test="executeTimes != null">
+        execute_times,
+      </if>
+      <if test="nextExecuteTime != null">
+        next_execute_time,
+      </if>
+      <if test="businessNo != null">
+        business_no,
+      </if>
+      <if test="context != null">
+        context,
+      </if>
+      <if test="hostname != null">
+        hostname,
+      </if>
+      <if test="eventContext != null">
+        event_context,
+      </if>
+      <if test="traceId != null">
+        trace_id,
+      </if>
+      <if test="logEnv != null">
+        LOG_ENV,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tntInstId != null">
+        #{tntInstId,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtModify != null">
+        #{gmtModify,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="commandType != null">
+        #{commandType,jdbcType=VARCHAR},
+      </if>
+      <if test="executeTimes != null">
+        #{executeTimes,jdbcType=INTEGER},
+      </if>
+      <if test="nextExecuteTime != null">
+        #{nextExecuteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessNo != null">
+        #{businessNo,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null">
+        #{context,jdbcType=VARCHAR},
+      </if>
+      <if test="hostname != null">
+        #{hostname,jdbcType=VARCHAR},
+      </if>
+      <if test="eventContext != null">
+        #{eventContext,jdbcType=VARCHAR},
+      </if>
+      <if test="traceId != null">
+        #{traceId,jdbcType=VARCHAR},
+      </if>
+      <if test="logEnv != null">
+        #{logEnv,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.lpy.entity.AcAsynExecutorCmd">
+    update ac_asyn_executor_cmd
+    <set>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtModify != null">
+        gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="commandType != null">
+        command_type = #{commandType,jdbcType=VARCHAR},
+      </if>
+      <if test="executeTimes != null">
+        execute_times = #{executeTimes,jdbcType=INTEGER},
+      </if>
+      <if test="nextExecuteTime != null">
+        next_execute_time = #{nextExecuteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessNo != null">
+        business_no = #{businessNo,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null">
+        context = #{context,jdbcType=VARCHAR},
+      </if>
+      <if test="hostname != null">
+        hostname = #{hostname,jdbcType=VARCHAR},
+      </if>
+      <if test="eventContext != null">
+        event_context = #{eventContext,jdbcType=VARCHAR},
+      </if>
+      <if test="traceId != null">
+        trace_id = #{traceId,jdbcType=VARCHAR},
+      </if>
+      <if test="logEnv != null">
+        LOG_ENV = #{logEnv,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tnt_inst_id = #{tntInstId,jdbcType=VARCHAR}
+      and id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.lpy.entity.AcAsynExecutorCmd">
+    update ac_asyn_executor_cmd
+    set gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      command_type = #{commandType,jdbcType=VARCHAR},
+      execute_times = #{executeTimes,jdbcType=INTEGER},
+      next_execute_time = #{nextExecuteTime,jdbcType=TIMESTAMP},
+      business_no = #{businessNo,jdbcType=VARCHAR},
+      context = #{context,jdbcType=VARCHAR},
+      hostname = #{hostname,jdbcType=VARCHAR},
+      event_context = #{eventContext,jdbcType=VARCHAR},
+      trace_id = #{traceId,jdbcType=VARCHAR},
+      LOG_ENV = #{logEnv,jdbcType=VARCHAR}
+    where tnt_inst_id = #{tntInstId,jdbcType=VARCHAR}
+      and id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
